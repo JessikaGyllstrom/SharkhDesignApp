@@ -1,0 +1,6 @@
+framework module Pods_SharkhDesignAppTests {
+  umbrella header "Pods-SharkhDesignAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
