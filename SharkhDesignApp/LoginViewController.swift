@@ -11,8 +11,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         // call the keyboardwillshow-function when the viewcontroller receive notification that keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow), name:  UIResponder.keyboardWillShowNotification, object: nil)
-
-        
         
         // call the keyboardwillshow-function when the viewcontroller receive notification that keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -23,7 +21,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.email.delegate = self
         self.password.delegate = self
         
-        // adds image "envelope" inside textfield
+        
+        let emailicon = UIImage(systemName: "envelope")!
+        setPaddingWithImage(image: emailicon, textField: (email))
+        
+        let passwordicon = UIImage(systemName: "lock.circle")!
+        setPaddingWithImage(image: passwordicon, textField: (password))
+        
+      /*  // adds image "envelope" inside textfield
         let emailIcon = UIImage(systemName: "envelope")
         addLeftImageTo(txtField: email, andImage: emailIcon!)
         
@@ -33,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         func textFieldsShouldReturn(_ textField: UITextField) -> Bool {
             return true
-        }
+        }*/
     }
     @IBAction func loginbtn(_ sender: Any) {
         validateFields()
@@ -97,14 +102,28 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             present(vc, animated: true)
         }
     }
-    // adds image inside textfield
-    func addLeftImageTo(txtField: UITextField, andImage img: UIImage) {
-        let leftImageView = UIImageView(frame: CGRect(x: 0.0, y: 20.0, width: img.size.width, height: img.size.height))
+func setPaddingWithImage(image: UIImage, textField: UITextField){
+    let imageView = UIImageView(image: image)
+    imageView.contentMode = .scaleAspectFit
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 50))
+    imageView.frame = CGRect(x: 13.0, y: 13.0, width: 24.0, height: 24.0)
+    imageView.tintColor = .lightGray
+
+    //For Setting extra padding other than Icon.
+    let seperatorView = UIView(frame: CGRect(x: 50, y: 0, width: 10, height: 50))
+    view.addSubview(seperatorView)
+    textField.leftViewMode = .always
+    view.addSubview(imageView)
+    textField.leftViewMode = UITextField.ViewMode.always
+    textField.leftView = view
+}
+    /*func addLeftImageTo(txtField: UITextField, andImage img: UIImage) {
+        let leftImageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: img.size.width, height: img.size.height))
         leftImageView.image = img
         leftImageView.tintColor = .lightGray
         txtField.leftView = leftImageView
         txtField.leftViewMode = .always
-    }
+    }*/
     @objc func keyboardWillShow(notification : Notification) {
         guard let keyboardsize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -118,6 +137,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.frame.origin.y = 0
     }
     }
+
 
     
     
