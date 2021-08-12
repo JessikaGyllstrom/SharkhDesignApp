@@ -1,13 +1,27 @@
 import UIKit
 import FirebaseAuth
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // call the keyboardwillshow-function when the viewcontroller receive notification that keyboard is going to be shown
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow), name:  UIResponder.keyboardWillShowNotification, object: nil)
+
+        
+        
+        // call the keyboardwillshow-function when the viewcontroller receive notification that keyboard is going to be shown
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.email.tag = 0
+        self.password.tag = 1
+        
+        self.email.delegate = self
+        self.password.delegate = self
         
         // adds image "envelope" inside textfield
         let emailIcon = UIImage(systemName: "envelope")
@@ -16,8 +30,10 @@ class LoginViewController: UIViewController {
         // adds image "lock" inside textfield
         let passwordIcon = UIImage(systemName: "lock")
         addLeftImageTo(txtField: password, andImage: passwordIcon!)
-
-        // Do any additional setup after loading the view.
+        
+        func textFieldsShouldReturn(_ textField: UITextField) -> Bool {
+            return true
+        }
     }
     @IBAction func loginbtn(_ sender: Any) {
         validateFields()
@@ -29,6 +45,18 @@ class LoginViewController: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         present(vc, animated: true)
     }
+    // when the "return"-key is pushed it will go to next textfield
+     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let nextTag = textField.tag + 1
+        
+        if let nextResponder = textField.superview?.viewWithTag(nextTag) {
+            nextResponder.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+    }
+        return true
+        }
+
     // checks if the textfields are filled, if not an alert will pop up
     func validateFields() {
         if email.text?.isEmpty == true {
@@ -68,15 +96,29 @@ class LoginViewController: UIViewController {
             vc.modalPresentationStyle = .overFullScreen
             present(vc, animated: true)
         }
-        }
+    }
     // adds image inside textfield
     func addLeftImageTo(txtField: UITextField, andImage img: UIImage) {
-        let leftImageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: img.size.width, height: img.size.height))
+        let leftImageView = UIImageView(frame: CGRect(x: 0.0, y: 20.0, width: img.size.width, height: img.size.height))
         leftImageView.image = img
-        leftImageView.tintColor = .black
+        leftImageView.tintColor = .lightGray
         txtField.leftView = leftImageView
         txtField.leftViewMode = .always
     }
+    @objc func keyboardWillShow(notification : Notification) {
+        guard let keyboardsize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        self.view.frame.origin.y = 0 - keyboardsize.height
+    }
+    @objc func keyboardWillHide(notification : Notification) {
+        guard let keyboardsize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+            }
+        self.view.frame.origin.y = 0
+    }
     }
 
+    
+    
 

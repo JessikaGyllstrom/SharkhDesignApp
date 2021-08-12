@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import Firebase
+
 
 class GoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //creats a reference to firestore
+        let db = Firestore.firestore()
+        //adds a collection with data to the firestoredatabase
+        db.collection("time").addDocument(data: ["hours":2])
 
         // Do any additional setup after loading the view.
     }
