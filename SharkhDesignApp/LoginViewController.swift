@@ -5,9 +5,29 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var logo: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
+        
+       
+        /*let imageV = UIImageView(frame: CGRect(x: 50, y: 100, width: 150, height: 100))
+           imageV.center = view.center
+           imageV.image = UIImage(named: "logo", in: Bundle(for: type(of: self)), compatibleWith: nil)
+           view.addSubview(imageV)*/
+        
+        
+        //UIImageView.animate(withDuration: 2.0, animations: {
+            //self.logo
+
+
+
+
+            //self.logo.transform = self.logo.transform.rotated(by: CGFloat.pi)
+            //self.logo.transform = self.logo.transform.
+    
+
         
         // call the keyboardwillshow-function when the viewcontroller receive notification that keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow), name:  UIResponder.keyboardWillShowNotification, object: nil)
@@ -21,6 +41,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.email.delegate = self
         self.password.delegate = self
         
+
         
         let emailicon = UIImage(systemName: "envelope")!
         setPaddingWithImage(image: emailicon, textField: (email))
@@ -28,6 +49,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let passwordicon = UIImage(systemName: "lock.circle")!
         setPaddingWithImage(image: passwordicon, textField: (password))
         
+    
       /*  // adds image "envelope" inside textfield
         let emailIcon = UIImage(systemName: "envelope")
         addLeftImageTo(txtField: email, andImage: emailIcon!)
@@ -136,7 +158,9 @@ func setPaddingWithImage(image: UIImage, textField: UITextField){
             }
         self.view.frame.origin.y = 0
     }
+            
     }
+    
 
 
     
